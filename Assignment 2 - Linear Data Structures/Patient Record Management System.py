@@ -1,5 +1,5 @@
-class Patient:
-    def __init__(self, name, age, id, gender, medical_history, current_condition):
+class Patient: # define a class to store each patients information 
+    def __init__(self, name, age, id, gender, medical_history, current_condition): # all attributes associated with a patient record
         self.name = name
         self.age = age
         self.id = id
@@ -7,20 +7,20 @@ class Patient:
         self.medical_history = medical_history
         self.current_condition = current_condition
 
-    def __str__(self):
+    def __str__(self): # a function to display the patients records
         return f"Patient Name: {self.name},Patient Age: {self.age}, Patient ID: {self.id}, Patient Gender: {self.gender}, Patient Medical History:{self.medical_history}, Patient Current Condition: {self.current_condition} "
 
-class Appointment:
-    def __init__(self, patient, doctor, admission_date, time):
+class Appointment: # define a class to store each appointment made by a patient
+    def __init__(self, patient, doctor, admission_date, time): # all attributes associates with an appointment
         self.patient = patient
         self.doctor = doctor
         self.admission_date = admission_date
         self.time = time
 
-    def __str__(self):
+    def __str__(self): # a function to display the appointment information
         return f"Patient Name: {self.patient}, Doctor Name: {self.doctor}, Admission Date: {self.admission_date}, Time: {self.time}"
 
-class Node:
+class Node: # a class to define a node
     def __init__(self, patient):
         self.left = None
         self.right = None
@@ -49,19 +49,19 @@ def inorder_traversal(root):
         print()
         inorder_traversal(root.right)
 
-class PatientRecordManagementSystem:
+class PatientRecordManagementSystem: # defines a class for the hospital system, specifically patient record management
     def __init__(self):
-        self.patient_record = {}
-        self.appointments = []
-        self.queue = []
+        self.patient_record = {} # dictionary to store patient record
+        self.appointments = [] # list to store appointments
+        self.queue = [] # queue to maintain waiting line for consulatation, ensuring a FIFO order
         self.root = None
 
-    def add_patient_record(self, name, age, id, gender, medical_history, current_condition):
+    def add_patient_record(self, name, age, id, gender, medical_history, current_condition): # Adding a new patient record using BST data structure
         new_patient = Patient(name, age, id, gender, medical_history, current_condition)
         self.root = insert(self.root, new_patient)
         self.patient_record[id] = new_patient
 
-    def update_patient_record(self, root, id, new_medical_history, new_current_condition):  # Function to update patient record using BST data structure
+    def update_patient_record(self, root, id, new_medical_history, new_current_condition):  # Updating a patient record using BST data structure
         if root is None:
             return
         if root.patient.id == id:
@@ -72,7 +72,7 @@ class PatientRecordManagementSystem:
         else:
             self.update_patient_record(root.left, id, new_medical_history, new_current_condition)
 
-    def remove_patient_record(self, root, id):
+    def remove_patient_record(self, root, id): # Removing a patient record using BST data structure
         if root is None: # If the root is None, meaning the tree is empty or the patient record with the given ID does not exist, the function returns None.
             return root
         if id < root.patient.id: # If the ID to be removed is less than the current root's patient ID, the function recursively calls itself on the left subtree.
@@ -92,14 +92,13 @@ class PatientRecordManagementSystem:
             root.right = self.remove_patient_record(root.right, successor.patient.id)
         return root
 
-    def schedule_appointment(self, patient, doctor, admission_date, time):
+    def schedule_appointment(self, patient, doctor, admission_date, time): # Scheduling an appointment for a patient with a specific doctor.
         appointment = Appointment(patient, doctor, admission_date, time)
         self.appointments.append(appointment)
         # Print the details of the newly added appointment
         print(f"Appointment scheduled for {appointment.patient} with {appointment.doctor} on {appointment.admission_date} at {appointment.time}")
 
-    def sort_records_by_date(self):
-        # Create a hash table to organize patient records by admission date
+    def sort_records_by_date(self): # Organizing patient records in a sorted manner based on their admission date using hash table data structure.
         hash_table = {}
         for appointment in self.appointments:
             if appointment.admission_date in hash_table:
@@ -117,11 +116,12 @@ class PatientRecordManagementSystem:
 
         return sorted_appointments
 
-    def enqueue(self, patient):
+    # Maintaining a line of patients waiting for consultations ensuring FIFO (First-In-First-Out) order using the Queue data structure.
+    def enqueue(self, patient): # Adding patients to the consultation queue
         self.queue.append(patient)
         print(f"{patient.name} has been added to the queue.")
 
-    def dequeue(self):
+    def dequeue(self): # Removing patients from consultation queue
         if not self.is_empty():
             removed_patient = self.queue.pop(0)
             print(f"{removed_patient.name} has been called for consultation.")
@@ -129,10 +129,10 @@ class PatientRecordManagementSystem:
         else:
             print("The queue is empty.")
 
-    def is_empty(self):
+    def is_empty(self): # checks if the queue is empty
         return len(self.queue) == 0
 
-    def display_queue(self):
+    def display_queue(self): # displaying all patients records within the queue
         for patient in self.queue:
             print(f"Name: {patient.name}, Age: {patient.age}, ID: {patient.id}, Gender: {patient.gender}, Medical History:{patient.medical_history}, Current Condition: {patient.current_condition}")
 
