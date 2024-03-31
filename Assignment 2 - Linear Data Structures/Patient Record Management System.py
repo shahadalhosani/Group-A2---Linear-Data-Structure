@@ -1,4 +1,4 @@
-class Patient: # define a class to store each patients information 
+class Patient: # define a class to store each patients information
     def __init__(self, name, age, id, gender, medical_history, current_condition, admission_date): # all attributes associated with a patient record
         self.name = name
         self.age = age
@@ -9,7 +9,7 @@ class Patient: # define a class to store each patients information
         self.admission_date = admission_date
 
     def __str__(self): # a function to display the patients records
-        return f"Patient Name: {self.name},Patient Age: {self.age}, Patient ID: {self.id}, Patient Gender: {self.gender}, Patient Medical History:{self.medical_history}, Patient Current Condition: {self.current_condition}, Patient Admission Date: {self.admission_date}"
+        return f"Patient Name: {self.name}, Patient Age: {self.age}, Patient ID: {self.id}, Patient Gender: {self.gender}, Patient Medical History: {self.medical_history}, Patient Current Condition: {self.current_condition}, Patient Admission Date: {self.admission_date}"
 
 class Appointment: # define a class to store each appointment made by a patient
     def __init__(self, patient, doctor, time): # all attributes associates with an appointment
@@ -93,29 +93,29 @@ class PatientRecordManagementSystem: # defines a class for the hospital system, 
             root.right = self.remove_patient_record(root.right, successor.patient.id)
         return root
 
-    def schedule_appointment(self, patient, doctor, admission_date, time): # Scheduling an appointment for a patient with a specific doctor.
-        appointment = Appointment(patient, doctor, admission_date, time)
+    def schedule_appointment(self, patient, doctor, time): # Scheduling an appointment for a patient with a specific doctor.
+        appointment = Appointment(patient, doctor, time)
         self.appointments.append(appointment)
         # Print the details of the newly added appointment
-        print(f"Appointment scheduled for {appointment.patient} with {appointment.doctor} on {appointment.admission_date} at {appointment.time}")
+        print(f"Appointment scheduled for {appointment.patient} with {appointment.doctor} at {appointment.time}")
 
-    def sort_records_by_date(self): # Organizing patient records in a sorted manner based on their admission date using hash table data structure.
+    def sort_records_by_date(self): # Create a hash table to organize patient records by admission date
         hash_table = {}
-        for appointment in self.appointments:
-            if appointment.admission_date in hash_table:
-                hash_table[appointment.admission_date].append(appointment)
+        for patient_id, patient in self.patient_record.items():
+            if patient.admission_date in hash_table:
+                hash_table[patient.admission_date].append(patient)
             else:
-                hash_table[appointment.admission_date] = [appointment]
+                hash_table[patient.admission_date] = [patient]
 
         # Sort the keys of the hash table (admission dates)
         sorted_keys = sorted(hash_table.keys())
 
-        # Retrieve the appointments in sorted order
-        sorted_appointments = []
+        # Retrieve the records in sorted order
+        sorted_records = []
         for key in sorted_keys:
-            sorted_appointments.extend(hash_table[key])
+            sorted_records.extend(hash_table[key])
 
-        return sorted_appointments
+        return sorted_records
 
     # Maintaining a line of patients waiting for consultations ensuring FIFO (First-In-First-Out) order using the Queue data structure.
     def enqueue(self, patient): # Adding patients to the consultation queue
@@ -138,7 +138,7 @@ class PatientRecordManagementSystem: # defines a class for the hospital system, 
 
     def display_queue(self): # displaying all patients records within the queue
         for patient in self.queue:
-            print(f"Name: {patient.name}, Age: {patient.age}, ID: {patient.id}, Gender: {patient.gender}, Medical History:{patient.medical_history}, Current Condition: {patient.current_condition}")
+            print(f"Name: {patient.name}, Age: {patient.age}, ID: {patient.id}, Gender: {patient.gender}, Medical History: {patient.medical_history}, Current Condition: {patient.current_condition}")
 
 
 # Test Cases:
