@@ -20,6 +20,27 @@ class Appointment: # define a class to store each appointment made by a patient
     def __str__(self): # a function to display the appointment information
         return f"Patient Name: {self.patient}, Doctor Name: {self.doctor}, Time: {self.time}"
 
+class Prescription:
+    def __init__(self, patient_name, medications):
+        self.patient_name = patient_name
+        self.medications = medications
+
+    def __str__(self):
+        return f"Prescription for Patient {self.patient_name}: {self.medications}"
+
+class Stack:
+    def __init__(self):
+        self.items = []
+
+    def push(self, item):
+        self.items.append(item)
+
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+
+    def is_empty(self):
+        return len(self.items) == 0
 class Node: # a class to define a node
     def __init__(self, patient):
         self.left = None
@@ -55,6 +76,7 @@ class PatientRecordManagementSystem: # defines a class for the hospital system, 
         self.patient_record = {} # dictionary to store patient record
         self.appointments = [] # list to store appointments
         self.queue = [] # queue to maintain waiting line for consulatation, ensuring a FIFO order
+        self.stack = Stack() # we used the stack to manage the description of the patient's
         self.root = None
 
     def add_patient_record(self, name, age, id, gender, medical_history, current_condition, admission_date): # Adding a new patient record using BST data structure
@@ -140,7 +162,32 @@ class PatientRecordManagementSystem: # defines a class for the hospital system, 
         for patient in self.queue:
             print(f"Name: {patient.name}, Age: {patient.age}, ID: {patient.id}, Gender: {patient.gender}, Medical History: {patient.medical_history}, Current Condition: {patient.current_condition}")
 
+    def issue_prescription(self, patient_name, medications):
+        for patient_id, patient in self.patient_record.items():
+            if patient.name == patient_name:
+                prescription = Prescription(patient_name, medications)
+                self.stack.push(prescription)
+                return prescription
+        else:
+            print("Patient not found in records. Prescription cannot be issued.")
+            return None
 
+    def display_prescription_stack(self): #Here we added a function
+        if not self.stack.is_empty():
+            for prescription in self.stack.items:
+                print(prescription)
+        else:
+            print("Prescription stack is empty.")
+
+    def dispense_prescription(self):
+        if not self.stack.is_empty():
+            prescription = self.stack.pop()
+            print(f"Prescription dispensed for Patient {prescription.patient_name}.")
+            return prescription
+        else:
+            print("Prescription stack is empty. No prescription to dispense.")
+            return None
+            
 # Test Cases:
 if __name__ == "__main__":
     # Creating an instance of PatientRecordManagementSystem
@@ -200,3 +247,17 @@ if __name__ == "__main__":
 
     # Trying to consult from an empty queue
     prms.dequeue()
+
+        # Issue prescriptions for patients during consultation
+    print("\nIssue Prescriptions to Patients during consultation:")
+    prms.issue_prescription("Zainab", ["Paracetamol", "Antibiotics"])
+    prms.issue_prescription("Ahmed", ["Ibuprofen", "Cough Syrup"])
+    prms.issue_prescription("Shahad", ["Throat Lozenges", "Antibiotics"])
+
+    # Display prescription stack
+    prms.display_prescription_stack()
+
+    # Dispense prescriptions, ensuring Last in first out order (stack)
+    prms.dispense_prescription()
+    prms.dispense_prescription()
+    prms.dispense_prescription()
