@@ -1,24 +1,24 @@
 class Patient: # define a class to store each patients information 
-    def __init__(self, name, age, id, gender, medical_history, current_condition): # all attributes associated with a patient record
+    def __init__(self, name, age, id, gender, medical_history, current_condition, admission_date): # all attributes associated with a patient record
         self.name = name
         self.age = age
         self.id = id
         self.gender = gender
         self.medical_history = medical_history
         self.current_condition = current_condition
+        self.admission_date = admission_date
 
     def __str__(self): # a function to display the patients records
-        return f"Patient Name: {self.name},Patient Age: {self.age}, Patient ID: {self.id}, Patient Gender: {self.gender}, Patient Medical History:{self.medical_history}, Patient Current Condition: {self.current_condition} "
+        return f"Patient Name: {self.name},Patient Age: {self.age}, Patient ID: {self.id}, Patient Gender: {self.gender}, Patient Medical History:{self.medical_history}, Patient Current Condition: {self.current_condition}, Patient Admission Date: {self.admission_date}"
 
 class Appointment: # define a class to store each appointment made by a patient
-    def __init__(self, patient, doctor, admission_date, time): # all attributes associates with an appointment
+    def __init__(self, patient, doctor, time): # all attributes associates with an appointment
         self.patient = patient
         self.doctor = doctor
-        self.admission_date = admission_date
         self.time = time
 
     def __str__(self): # a function to display the appointment information
-        return f"Patient Name: {self.patient}, Doctor Name: {self.doctor}, Admission Date: {self.admission_date}, Time: {self.time}"
+        return f"Patient Name: {self.patient}, Doctor Name: {self.doctor}, Time: {self.time}"
 
 class Node: # a class to define a node
     def __init__(self, patient):
@@ -46,6 +46,7 @@ def inorder_traversal(root):
         print("Gender:", root.patient.gender)
         print("Medical History:", root.patient.medical_history)
         print("Current Condition:", root.patient.current_condition)
+        print("Admission Date:", root.patient.admission_date)
         print()
         inorder_traversal(root.right)
 
@@ -56,8 +57,8 @@ class PatientRecordManagementSystem: # defines a class for the hospital system, 
         self.queue = [] # queue to maintain waiting line for consulatation, ensuring a FIFO order
         self.root = None
 
-    def add_patient_record(self, name, age, id, gender, medical_history, current_condition): # Adding a new patient record using BST data structure
-        new_patient = Patient(name, age, id, gender, medical_history, current_condition)
+    def add_patient_record(self, name, age, id, gender, medical_history, current_condition, admission_date): # Adding a new patient record using BST data structure
+        new_patient = Patient(name, age, id, gender, medical_history, current_condition, admission_date)
         self.root = insert(self.root, new_patient)
         self.patient_record[id] = new_patient
 
@@ -118,8 +119,11 @@ class PatientRecordManagementSystem: # defines a class for the hospital system, 
 
     # Maintaining a line of patients waiting for consultations ensuring FIFO (First-In-First-Out) order using the Queue data structure.
     def enqueue(self, patient): # Adding patients to the consultation queue
-        self.queue.append(patient)
-        print(f"{patient.name} has been added to the queue.")
+        sorted_patients = self.sort_records_by_date()
+        for patient in sorted_patients:
+            if patient not in self.queue:  # Check if patient is already in the queue
+                self.queue.append(patient)
+                print(f"{patient.name} has been added to the queue.")
 
     def dequeue(self): # Removing patients from consultation queue
         if not self.is_empty():
@@ -143,9 +147,10 @@ if __name__ == "__main__":
     prms = PatientRecordManagementSystem()
 
     # Adding new patient records
-    prms.add_patient_record("Shahad", 19, 101, "Female", "Fever", "Non-Stable")
-    prms.add_patient_record("Zainab", 20, 102, "Female", "Headache", "Stable")
-    prms.add_patient_record("Ahmed", 30, 103, "Male", "Cough", "Non-Stable")
+    prms.add_patient_record("Shahad", 19, 101, "Female", "Fever", "Non-Stable", "2024-04-15")
+    prms.add_patient_record("Zainab", 20, 102, "Female", "Headache", "Stable", "2024-02-01")
+    prms.add_patient_record("Ahmed", 30, 103, "Male", "Cough", "Non-Stable", "2024-02-10")
+
 
     print("All Patient Records:")
     inorder_traversal(prms.root)
@@ -166,9 +171,9 @@ if __name__ == "__main__":
 
     # Scheduling appointment
     print("\nScheduling Appointments:")
-    prms.schedule_appointment("Shahad", "Dr. Smith", "2024-04-15", "12.00 PM")
-    prms.schedule_appointment("Zainab", "Dr. Johnson", "2024-02-01", "2.00 PM")
-    prms.schedule_appointment("Ahmed", "Dr. Khaled", "2024-02-10", "10.00 AM")
+    prms.schedule_appointment("Shahad", "Dr. Smith", "12.00 PM")
+    prms.schedule_appointment("Zainab", "Dr. Johnson", "2.00 PM")
+    prms.schedule_appointment("Ahmed", "Dr. Khaled", "10.00 AM")
 
     #Sorting patients record based on admission date
     sorted_records_by_date = prms.sort_records_by_date()
@@ -178,10 +183,10 @@ if __name__ == "__main__":
 
     print("\nAdding patients to waiting ling for consultation: ")
 
-    # Patients arrive and join the queue
-    prms.enqueue(Patient("Shahad", 19, 101, "Female", "Fever", "Non-Stable"))
-    prms.enqueue(Patient("Zainab", 20, 102, "Female", "Headache", "Stable"))
-    prms.enqueue(Patient("Ahmed", 30, 103, "Male", "Cough", "Non-Stable"))
+    # Patients arrive and join the queue - added based on admission date
+    prms.enqueue(Patient("Shahad", 19, 101, "Female", "Fever", "Non-Stable", "2024-04-15"))
+    prms.enqueue(Patient("Zainab", 20, 102, "Female", "Headache", "Stable", "2024-02-01"))
+    prms.enqueue(Patient("Ahmed", 30, 103, "Male", "Cough", "Non-Stable", "2024-02-10"))
 
     print("\nPatients in the queue: ")
     # Displaying the current queue
