@@ -1,3 +1,17 @@
+class Patient:  # define a class to store each patients information
+    def __init__(self, name, age, id, gender, medical_history, current_condition, admission_date):  # all attributes associated with a patient record
+        self.name = name
+        self.age = age
+        self.id = id
+        self.gender = gender
+        self.medical_history = medical_history
+        self.current_condition = current_condition
+        self.admission_date = admission_date
+
+    def __str__(self):  # a function to display the patients records
+        return f"Patient Name: {self.name}, Patient Age: {self.age}, Patient ID: {self.id}, Patient Gender: {self.gender}, Patient Medical History: {self.medical_history}, Patient Current Condition: {self.current_condition}, Patient Admission Date: {self.admission_date}"
+
+
 class Patient: # define a class to store each patients information
     def __init__(self, name, age, id, gender, medical_history, current_condition, admission_date): # all attributes associated with a patient record
         self.name = name
@@ -390,6 +404,14 @@ if __name__ == "__main__":
 
         elif choice == '6':
             # Add identified patients to waiting line
+            print("\nAdding patient to waiting line for consultation:")
+            name = input("Enter patient name: ")
+            age = int(input("Enter patient age: "))
+            patient_id = int(input("Enter patient ID: "))
+            gender = input("Enter patient gender: ")
+            medical_history = input("Enter patient medical history: ")
+            current_condition = input("Enter patient current condition: ")
+            admission_date = input("Enter admission date (YYYY-MM-DD): ")
             prms.enqueue(Patient(name, age, patient_id, gender, medical_history, current_condition, admission_date))
 
 
@@ -411,6 +433,7 @@ if __name__ == "__main__":
             patient_id = input("Enter patient ID: ")
             medications = input("Enter medications (comma-separated): ").split(",")
             prms.issue_prescription(patient_name, patient_id, medications)
+            print("Prescription issued for patient", patient_name, "with medications:", medications)
 
 
         elif choice == "10":
@@ -426,6 +449,7 @@ if __name__ == "__main__":
 
 
         elif choice == "12":
+            print("\nSearch Patient")
             patient_id = int(input("Enter patient id you are searching for: "))
             prms.search_patient(patient_id)
 
