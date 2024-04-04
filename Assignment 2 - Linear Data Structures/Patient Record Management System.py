@@ -369,7 +369,7 @@ if __name__ == "__main__":
             print("\nRemoving a Patient Record:")
             patient_id = int(input("Enter patient ID to remove: "))
             prms.root = prms.remove_patient_record(prms.root, patient_id)
-            print("Patient record after removing a certain patient")
+            print("\nPatient record after removing a certain patient")
             inorder_traversal(prms.root)
 
 
