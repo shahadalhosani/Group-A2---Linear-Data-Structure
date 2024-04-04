@@ -261,3 +261,121 @@ if __name__ == "__main__":
     prms.dispense_prescription()
     prms.dispense_prescription()
     prms.dispense_prescription()
+
+#Test 2 the menu interface (users input)
+
+patient_records = []
+while True: 
+    print("\n The patient records manegments system")
+    print("1. Add patients record")
+    print("2. Update patients records")
+    print("3. Remove a patient record")
+    print("4. Schedule an appointment")
+    print("5. Sorting patients records by admission dates")
+    print("6. Add the patients to the waiting line for the consultation")
+    print("7. Displaying Consultation queue")
+    print("8. Consulting the patients")
+    print("9. Issue Prescription")
+    print("10. Display priscription stack")
+    print("11. Distribute Prescription")
+    print("12. Search for a patient and display a summary of their records")
+    print("0. Exit")
+        
+    opt = input("\n write your choice")
+    
+    if opt == "1":
+        print("\n Adding in the patients record: ")
+        name = input("write the patients name: ")
+        age = int(input("write the patients age: "))
+        patient_id = int(input("write patients ID: "))
+        gender = input("write the patients gender: ")
+        medical_history = input("write the patients medical history: ") 
+        current_condition = input("write the patients condition: ") 
+        admission_date = input("write the patients admission date: ")
+        prms.add_patient_record(name, age, patient_id, gender, medical_history, current_condition, admission_date)
+        patient_records.append(prms.prms.patient_record[patient_id])
+        
+    elif opt == "2":
+        print("\n Update a patient record: ")
+        patient_id = int(input("write patients ID to update the record: ")
+        new_medical_history = input("write the new medical history: ")
+        new_current_condition = input("write the new condition: ")
+        prms.update_patient_record(prms.root, patient_id, new_medical_history, new_current_condition)
+        print("\n All the updated patient records: ")
+        inorder_traversal(prms.root)
+    elif opt == "3":
+        print("\n Removing the record: ")
+        patient_id = int(input("write ID to remove patient record: ")
+        prms.root = prms.remove_patient_record(prms.root, patient_id)
+        print("\n patients record after removing some pationt: ")
+        inorder_traversal(prms.root) 
+    elif opt == "4":
+        print("\n Scheduling an appointment: ")
+        patient_name = input("write the patients name: ")
+        patient_id = int(input("write patients ID: ") 
+        doctor_name = input("write the doctors name: ")
+        appointment_time = input("write the appintment time: ")
+        print("\n Appintment done!: ")
+        prms.schedule_appointment(patient_name, patient_id, doctor_name, appointment_time)
+  
+    elif opt == "5":
+         print("\n All patient records sorted by admission dates: ")
+         sorted_records_by_date = prms.sort_records_by_date()
+         for record in sorted_records_by_date:
+             print(record)
+    elif opt == "6":
+         prms.enqueue(Patient(name, age, patient_id, gender, medical_history, current_condition, admission_date)
+    elif opt == "7":
+         print("\n Consultation queue: ")
+         prms.display_queue()
+    elif opt == "8":
+         print("\n consulting patiemts: ")
+         prms.dequeue()
+         prms.dequeue()
+         prms.dequeue()
+    elif opt == "9":
+         patient_name = input("write the patients name: ")
+         patient_id = int(input("write patients ID: ")
+         medications = input("write the medications (seperated by comma): ").split(",") 
+         prms.issue_prescription(patient_name, patient_id, medications)
+    elif opt == "10": 
+         print("\n prescription stack: ")
+         prms.display_prescription_stack()
+    elif opt == "11":
+         print("\n dispincing prescription: ")
+         prms.distribute_prescription()
+         prms.distribute_prescription()
+         prms.distribute_prescription()
+    elif opt =="12":
+         patient_id = int(input("write patients ID for searching: ")
+         prms.search_patient(patient_id)
+    elif opt == "0":#Exiting the programm and showing all data inputs
+         print("\n All patient records: ")
+         for record in patient_records:
+             print(record)
+         print("exiting the programm!")
+         break
+    else:
+        print("incorrect choice, make sure to pick numbers from 0-12")
+
+
+
+
+
+
+        
+   
+
+
+
+
+        
+    
+        
+        
+
+
+
+
+
+
